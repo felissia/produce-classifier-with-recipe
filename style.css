@@ -78,7 +78,7 @@ html, body, [data-testid="stAppViewContainer"] {
     box-shadow: 0 8px 20px rgba(0,0,0,0.12);
 
     height: auto;
-    min-height: unset;   /* 🔥 penting */
+    min-height: unset; 
 }
 
 /* Limit card height to avoid very tall cards and keep consistent layout */
@@ -138,6 +138,15 @@ html, body, [data-testid="stAppViewContainer"] {
     font-size: 2.6rem;
     line-height: 1.2;
 
-    position: relative;   /* 🔥 anti overlap */
+    position: relative;  
     z-index: 2;
 }
+
+
+.recipe-details {
+    background: transparent !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+}
+

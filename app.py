@@ -399,11 +399,6 @@ if api_ingredient:
 
                         
 
-                        # if st.button(
-                        #     "View recipe",
-                        #     key=f"meal_{recipe['idMeal']}"
-                        # ):
-                        #     st.session_state.selected_meal_id = recipe["idMeal"]
 
                         st.markdown(
                             f"<div class='recipe-title'>{recipe['strMeal']}</div>",
@@ -447,31 +442,32 @@ if api_ingredient:
 
     if st.session_state.selected_meal_id:
         st.markdown(" ")
-        with st.container():
+        if st.session_state.selected_meal_id:
+            st.markdown(" ")
+            st.markdown("<div class='recipe-details'>", unsafe_allow_html=True)
+
             st.header("🍽️ Recipe Details")
 
+            detail = fetch_recipe_detail(st.session_state.selected_meal_id)
 
-        detail = fetch_recipe_detail(st.session_state.selected_meal_id)
+            if detail:
+                st.subheader(detail["strMeal"])
+                st.image(detail["strMealThumb"], width=420)
 
-        if detail:
-            st.subheader(detail["strMeal"])
-            st.image(detail["strMealThumb"], width=420)
+                st.markdown("### 🧂 Ingredients")
+                ingredients = []
+                for i in range(1, 21):
+                    ing = detail.get(f"strIngredient{i}")
+                    meas = detail.get(f"strMeasure{i}")
+                    if ing and ing.strip():
+                        ingredients.append(f"- {meas} {ing}")
 
-            st.markdown("### 🧂 Ingredients")
-            ingredients = []
-            for i in range(1, 21):
-                ing = detail.get(f"strIngredient{i}")
-                meas = detail.get(f"strMeasure{i}")
-                if ing and ing.strip():
-                    ingredients.append(f"- {meas} {ing}")
+                st.markdown("\n".join(ingredients))
 
-            st.markdown("\n".join(ingredients))
+                st.markdown("### 📖 Instructions")
+                st.write(detail["strInstructions"])
+            st.markdown("</div>", unsafe_allow_html=True)
 
-            st.markdown("### 📖 Instructions")
-            st.write(detail["strInstructions"])
-
-
-    
     else:
         st.warning(
             f"No cooking recipes found for `{predicted_class_name}`.\n"
